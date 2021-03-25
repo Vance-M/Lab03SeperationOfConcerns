@@ -14,6 +14,11 @@ describe('routes for Order Tables', () => {
     return setup(pool);
   });
 
+  beforeEach(() => {
+    return request(app)
+    .post('/api/v1/orders')
+    .send({ quantity: 10 })
+  });
 
   it('creates a new order in our database and sends a text message', () => {
     return request(app)
@@ -22,7 +27,7 @@ describe('routes for Order Tables', () => {
       .then((res) => {
         // expect(createMessage).toHaveBeenCalledTimes(1);
         expect(res.body).toEqual({
-          id: '1',
+          id: '2',
           quantity: 10,
         });
       });
@@ -32,10 +37,10 @@ describe('routes for Order Tables', () => {
   it('gets all order in table', async () => {
       const res = await request(app)
         .get('/api/v1/orders')
-      expect(res.body).toEqual({
+      expect(res.body).toEqual([{
         id: '1',
         quantity: 10,
-      });
+      }]);
   });
 
   it('gets a single order by its ID', async () => {
